@@ -80,7 +80,7 @@ class FormationsController extends AbstractController {
     
     
     /**
-     * @Route("/formations/recherche/{champ}", name="formations.findAllContainValueHorsChampTableFormation")
+     * @Route("/formations/recherche/{champ}/{table}", name="formations.findAllContainValueHorsChampTableFormation")
      * @param type $champ
      * @param Request $request
      * @param type $table
@@ -99,7 +99,7 @@ class FormationsController extends AbstractController {
     }  
     
     /**
-     * @Route("/formations/recherche/{champ}/{table}", name="formations.findAllContainValueChampTableFormation")
+     * @Route("/formations/recherche/{champ}", name="formations.findAllContainValueChampTableFormation")
      * @param type $champ
      * @param Request $request
      * @param type $table
