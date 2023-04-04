@@ -95,4 +95,27 @@ class Playlist
 
         return $this;
     }
+    
+    /**
+     * 
+     * @return Collection
+     */
+    public function getCategoriesPlaylist() : Collection
+    {   
+        $categories = new arrayCollection();
+        
+        foreach($this->formations as $formation)
+        {
+            $categoriesFormation = $formation->GetCategories();
+            
+            foreach($categoriesFormation as $categorieFormation)
+            {
+                if(!$categories->contains($categorieFormation->getName()))
+                {
+                    $categories[] = $categorieFormation->getName();
+                }
+            }
+        }
+        return $categories;
+    }
 }

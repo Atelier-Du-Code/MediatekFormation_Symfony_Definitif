@@ -49,7 +49,7 @@ class PlaylistsController extends AbstractController {
      * @return Response
      */
     public function index(): Response{
-        $playlists = $this->playlistRepository->findAllOrderBy('name', 'ASC');
+        $playlists = $this->playlistRepository->findAllOrderByName('ASC');
         $categories = $this->categorieRepository->findAll();
         return $this->render(self::CHEMIN_PLAYLISTS, [
             'playlists' => $playlists,
@@ -63,14 +63,25 @@ class PlaylistsController extends AbstractController {
      * @param type $ordre
      * @return Response
      */
-    public function sort($champ, $ordre): Response{
-        $playlists = $this->playlistRepository->findAllOrderBy($champ, $ordre);
+    public function sort($champ, $ordre):Response
+    {
+        switch($champ)
+        {                
+            case "name":
+                $playlists = $this->playlistRepository->findByOrderByName($ordre);
+                break;
+            case "nbformations":
+                $playlists = $this->playlistRepository->findByOrderByNbFormations($ordre);
+                break;    
+            default:
+        }
+        
         $categories = $this->categorieRepository->findAll();
-        return $this->render(self::CHEMIN_PLAYLISTS, [
+        return $this->render(self :: CHEMIN_PLAYLISTS, [
             'playlists' => $playlists,
-            'categories' => $categories            
+            'categories' => $categories
         ]);
-    }         
+    }
     
     /**
      * @Route("/playlists/recherche/{champ}", name="playlists.findAllContainValueTbCategorie")

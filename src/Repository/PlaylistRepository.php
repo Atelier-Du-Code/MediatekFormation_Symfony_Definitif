@@ -46,25 +46,51 @@ class PlaylistRepository extends ServiceEntityRepository
     const PLAYLIST_FORMATION = 'p.formations';
     const FORMATION_CATEGORIE = 'f.categories';
     
-   
-    
-    /**
+     /**
      * Retourne toutes les playlists triées sur un champ
      * @param type $champ
      * @param type $ordre
      * @return Playlist[]
-     */
+     
     public function findAllOrderBy($champ, $ordre): array{
         return $this->createQueryBuilder('p')
-                ->select(self::ID)
-                ->addSelect(self::PLAYLIST_NAME)
-                ->addSelect( self::CATEGORIE_NAME.' '.self::CHAMP_RESULTAT_CATEGORIENAME)
-                ->leftjoin(self::PLAYLIST_FORMATION, 'f')
-                ->leftjoin(self::FORMATION_CATEGORIE, 'c')
-                ->groupBy(self::ID)
-                ->addGroupBy( self::CATEGORIE_NAME)
+                ->select(self :: ID)
+                ->addSelect(self :: PLAYLIST_NAME)
+                ->addSelect(self :: CATEGORIE_NAME.' '.self :: CHAMP_RESULTAT_CATEGORIENAME)
+                ->leftjoin(self :: PLAYLIST_FORMATION, 'f')
+                ->leftjoin(self :: FORMATION_CATEGORIE, 'c')
+                ->groupBy(self :: ID)
+                ->addGroupBy(self :: CATEGORIE_NAME)
                 ->orderBy('p.'.$champ, $ordre)
-                ->addOrderBy( self::CATEGORIE_NAME)
+                ->addOrderBy(self :: CATEGORIE_NAME)
+                ->getQuery()
+                ->getResult();       
+    }
+    */
+    /**
+     * Retourne toutes les playlists triées sur le nom de la playlist
+     * @param type $ordre
+     * @return Playlist[]
+     */
+    public function findByOrderByName($ordre): array{
+        return $this->createQueryBuilder('p')                
+                ->leftjoin(self::PLAYLIST_FORMATION, 'f')               
+                ->groupBy(self::ID)
+                ->orderBy(self :: PLAYLIST_NAME, $ordre)               
+                ->getQuery()
+                ->getResult();       
+    }
+    
+     /**
+     * Retourne toutes les playlists triées sur le nombre de formations
+     * @param type $ordre
+     * @return Playlist[]
+     */
+    public function findByOrderByNbFormations($ordre): array{
+        return $this->createQueryBuilder('p')                
+                ->leftjoin(self::PLAYLIST_FORMATION, 'f')                
+                ->groupBy(self::ID)                
+                ->orderBy('count(f.title)', $ordre)
                 ->getQuery()
                 ->getResult();       
     }
@@ -78,7 +104,7 @@ class PlaylistRepository extends ServiceEntityRepository
      */
     public function findByContainValueDansTableCategorie($champ, $valeur): array{
         if($valeur==""){
-            return $this->findAllOrderBy('name', 'ASC');
+            return $this->findByOrderByName('ASC');
         }           
             return $this->createQueryBuilder('p')
                     ->select(self::ID)
