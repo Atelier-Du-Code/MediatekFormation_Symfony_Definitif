@@ -1,0 +1,56 @@
+{% extends "baseadmin.html.twig" %}
+
+{% block body %}
+    
+    <h1>Page d'administration des formations</h1>
+    
+   <table class="table table-striped">
+        <caption>Cliquez sur une de ces miniatures pour commencer à apprendre de nouvelles compétences! </caption>
+        <thead>
+            <tr>
+                <th class="text-left align-top" scope="col">
+                    formation<br />                       
+                
+                </th>
+                <th class="text-left align-top" scope="col">
+                    playlist<br />                    
+                    
+                <th class="text-left align-top" scope="col">
+                    catégories
+                    
+                </th>
+                <th class="text-center align-top" scope="col">
+                    date<br />
+                    
+                </th>
+                <th class="text-center align-top" scope="col">
+                    &nbsp;
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for formation in formations %}
+                <tr class="align-middle">
+                    <td>
+                        <h5 class="text-info">
+                            {{ formation.title }}
+                        </h5>
+                    </td>
+                    <td class="text-left">
+                        {{ formation.playlist.name }}                  
+                    </td>                    
+                    <td class="text-left">
+                        {% for categorie in formation.categories %}
+                            {{ categorie.name }}<br />
+                        {% endfor %}
+                    </td>                    
+                    <td class="text-center">
+                        {{ formation.publishedatstring }}
+                    </td>
+                   
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
