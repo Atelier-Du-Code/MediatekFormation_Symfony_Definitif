@@ -17,9 +17,10 @@
                         </div>
                     </form>                    
                 </th>
+                
                 <th class="text-left align-top" scope="col">
                     catégories
-                    <form class="form-inline mt-1" method="POST" action="{{ path('playlists.findAllContainValueTbCategorie', {champ:'id', table:'categories'}) }}">
+                    <form class="form-inline mt-1" method="POST" action="{{ path('playlists.findAllContainValueTbCategorie', {champ:'id'}) }}">
                         <select class="form-select form-select-sm" name="recherche" id="recherche" onchange="this.form.submit()">
                             <option value=""></option>
                             {% for categorie in categories %}
@@ -33,6 +34,13 @@
                         </select>                    
                     </form>            
                 </th>
+                
+                <th class="text-right align-top" scope="col">
+                    Nombre de formations <br />
+                    <a href="{{ path('playlists.sort', {champ:'nbformations', ordre:'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>
+                    <a href="{{ path('playlists.sort', {champ:'nbformations', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>
+                 </th>
+                 
                 <th class="text-center align-top" scope="col">
                     &nbsp;
                 </th>
@@ -41,7 +49,7 @@
         <tbody>
             <!-- boucle sur les playlists -->
             {% set ancplaylist = '' %}
-            {% if playlists |length != 0 %}
+            {% if playlists|length != 0 %}
                 {% for k in 0..playlists|length-1 %}
                     <!-- affichage une fois chaque playlist -->
                     {% if playlists[k].name != ancplaylist %}

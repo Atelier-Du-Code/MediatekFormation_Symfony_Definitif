@@ -49,7 +49,7 @@ class PlaylistsController extends AbstractController {
      * @return Response
      */
     public function index(): Response{
-        $playlists = $this->playlistRepository->findAllOrderByName('ASC');
+        $playlists = $this->playlistRepository->findByOrderByName('ASC');
         $categories = $this->categorieRepository->findAll();
         return $this->render(self::CHEMIN_PLAYLISTS, [
             'playlists' => $playlists,
@@ -106,7 +106,7 @@ class PlaylistsController extends AbstractController {
      * @param Request $request
      * @return Response
      */
-    public function findAllContainValueDansLaTablePlaylist($champ, Request $request): Response{
+    public function findAllContainValueDansLaTablePlaylist($champ, Request $request): Response{       
         $valeur = $request->get("recherche");
         $playlists = $this->playlistRepository->findByContainValueDansLaTablePlaylist($champ, $valeur);
         $categories = $this->categorieRepository->findAll();
@@ -125,10 +125,12 @@ class PlaylistsController extends AbstractController {
     public function showOne($id): Response{
         $playlist = $this->playlistRepository->find($id);
         $playlistCategories = $this->categorieRepository->findAllForOnePlaylist($id);
+        $nbFormationDeLaPlaylist = $this->formationRepository->findCountForOnePlaylist($id);
         $playlistFormations = $this->formationRepository->findAllForOnePlaylist($id);
         return $this->render("pages/playlist.html.twig", [
             'playlist' => $playlist,
             'playlistcategories' => $playlistCategories,
+            'nbFormationDeLaPlaylist' => $nbFormationDeLaPlaylist,
             'playlistformations' => $playlistFormations
         ]);        
     }       

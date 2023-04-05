@@ -72,13 +72,13 @@ class PlaylistRepository extends ServiceEntityRepository
      * @param type $ordre
      * @return Playlist[]
      */
-    public function findByOrderByName($ordre): array{
-        return $this->createQueryBuilder('p')                
-                ->leftjoin(self::PLAYLIST_FORMATION, 'f')               
-                ->groupBy(self::ID)
-                ->orderBy(self :: PLAYLIST_NAME, $ordre)               
+    public function findByOrderByName($ordre) : array{
+        return $this->createQueryBuilder('p')
+                ->leftjoin(self :: PLAYLIST_FORMATION, 'f')
+                ->groupBy(self :: ID)
+                ->orderBy(self :: PLAYLIST_NAME, $ordre)
                 ->getQuery()
-                ->getResult();       
+                ->getResult();
     }
     
      /**
@@ -107,9 +107,6 @@ class PlaylistRepository extends ServiceEntityRepository
             return $this->findByOrderByName('ASC');
         }           
             return $this->createQueryBuilder('p')
-                    ->select(self::ID)
-                    ->addSelect(self::PLAYLIST_NAME)
-                    ->addSelect( self::CATEGORIE_NAME.' '.self::CHAMP_RESULTAT_CATEGORIENAME)
                     ->leftjoin(self::PLAYLIST_FORMATION, 'f')
                     ->leftjoin(self::FORMATION_CATEGORIE, 'c')
                     ->where('c.'.$champ.' LIKE :valeur')
@@ -133,10 +130,7 @@ class PlaylistRepository extends ServiceEntityRepository
             return $this->findAllOrderBy('name', 'ASC');
         }    
         
-        return $this->createQueryBuilder('p')
-                    ->select(self::ID)
-                    ->addSelect(self::PLAYLIST_NAME)
-                    ->addSelect( self::CATEGORIE_NAME.' '.self::CHAMP_RESULTAT_CATEGORIENAME)
+        return $this->createQueryBuilder('p')                    
                     ->leftjoin(self::PLAYLIST_FORMATION, 'f')
                     ->leftjoin(self::FORMATION_CATEGORIE, 'c')
                     ->where('p.'.$champ.' LIKE :valeur')

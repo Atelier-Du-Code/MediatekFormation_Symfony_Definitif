@@ -98,8 +98,8 @@ class Playlist
     
     /**
      * 
-     * @return Collection
-     */
+     * @return Collection<int, string>
+     */    
     public function getCategoriesPlaylist() : Collection
     {   
         $categories = new arrayCollection();
@@ -117,5 +117,20 @@ class Playlist
             }
         }
         return $categories;
+    }
+    
+    /**
+     * 
+     * @return int
+     */
+    public function getNbFormationsDeLaPlaylist() : int
+    {
+        $nbFormations = 0;
+       foreach($this->formations as $formation)   
+       {
+           $nbFormations++;
+       }
+       
+       return $nbFormations;
     }
 }

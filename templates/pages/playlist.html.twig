@@ -9,7 +9,8 @@
                 {% for playlist in playlistcategories %}
                     {{ playlist.name }}&nbsp;
                 {% endfor %}
-            <br /><br />
+            <br /><br />     
+            
             <strong>description :</strong><br />
                 {{ playlist.description|nl2br }}
         </div>
@@ -26,7 +27,7 @@
                     </div>
                     <div class="col d-flex align-items-center">
                         <a href="{{ path('formations.showone', {id:formation.id}) }}" 
-                           class="link-secondary text-decoration-none">
+                           class="link-secondary text-decoration-none" alt="C'est la miniature de la formation">
                             {{ formation.title }}
                         </a>          
                     </div>
