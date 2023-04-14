@@ -9,27 +9,49 @@
                 <th class="text-left align-top" scope="col">
                     Playlist <br />
                 </th>
+                <th class="text-left align-top" scope="col">
+                    Catégories                    
+                </th>
+                <th class="text-left align-right" scope="col">
+                    Nombre de formations                   
+                </th>
                 <th class="text-center align-top" scope="col">
                     &nbsp;
                 </th>
             </tr>
         </thead>
         <tbody>
-            {% for playlist in playlists %}
-                <tr class="align-middle">
-                    <td>
-                        <h5 class="text-info">
-                            {{ playlist.name }}
-                        </h5>
-                    </td>
-                    <td class="text-center">
-                        
-                         <a href="{{ path('admin.playlist.suppr', {id:playlist.id}) }}" 
-                            class="btn btn-danger" onclick="return confirm('Etes-vous sur de vouloir supprimer ?')">Supprimer</a> 
-                    </td>
-                    
-                </tr>
-            {% endfor %}
+             <!-- boucle sur les playlists -->
+            {% set ancplaylist = '' %}
+            {% if playlists|length != 0 %}
+                {% for k in 0..playlists|length-1 %}
+                    <!-- affichage une fois chaque playlist -->
+                    {% if playlists[k].name != ancplaylist %}
+                        {% set ancplaylist = playlists[k].name %}
+                        <tr class="align-middle">
+                            <td>
+                                <h5 class="text-info">
+                                    {{ playlists[k].name }}
+                                </h5>
+                            </td>                 
+                             <!--Catégorie de la playlist-->
+                                <td class="text-left">
+                                    {%  set categories = playlists[k].categoriesplaylist %}
+                                    {% if categories|length > 0 %}
+                                        {% for c in 0..categories|length-1 %}
+                                            &nbsp; {{ categories[c] }}
+                                        {% endfor %}
+                                    {% endif %}
+                                </td>   
+                                
+                             <!--Nombre de formation de la playlist-->
+                                <td>
+                                    {{ playlists[k].formations|length }}
+                                </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
         </tbody>
     </table>
 {% endblock %}
