@@ -61,5 +61,23 @@ class AdminPlaylistController extends AbstractController {
             'categories' => $categories            
         ]);
     }
+    
+    /**
+     * @Route("/adminPlaylist/suppr/{id}", name="admin.playlist.suppr")
+     * @param Playlist playlist
+     * @return Response
+     */
+    public function suppr(Playlist $playlist) : Response{
+        
+        if($playlist->getNbFormationsDeLaPlaylist() == 0)
+        {
+             $this->playlistRepository->remove($playlist, true);
+             return $this->redirectToRoute('admin.playlists');
+        }
+        else
+        {
+            return $this->redirectToRoute('admin.playlists');
+        }       
+    }
 }
 
