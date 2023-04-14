@@ -1,0 +1,30 @@
+{% extends "baseadmin.html.twig" %}
+
+{% block body %}
+    <h1>Page d'administration des playlists</h1>    
+    
+   <table class="table table-striped">        
+        <thead>
+            <tr>
+                <th class="text-left align-top" scope="col">
+                    Playlist <br />
+                </th>
+                <th class="text-center align-top" scope="col">
+                    &nbsp;
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for playlist in playlists %}
+                <tr class="align-middle">
+                    <td>
+                        <h5 class="text-info">
+                            {{ playlist.name }}
+                        </h5>
+                    </td>
+                    
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

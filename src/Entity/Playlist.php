@@ -119,18 +119,4 @@ class Playlist
         return $categories;
     }
     
-    /**
-     * 
-     * @return int
-     */
-    public function getNbFormationsDeLaPlaylist() : int
-    {
-        $nbFormations = 0;
-       foreach($this->formations as $formation)   
-       {
-           $nbFormations++;
-       }
-       
-       return $nbFormations;
-    }
 }
