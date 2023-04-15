@@ -25,6 +25,7 @@
             {% set ancplaylist = '' %}
             {% if playlists|length != 0 %}
                 {% for k in 0..playlists|length-1 %}
+                    
                     <!-- affichage une fois chaque playlist -->
                     {% if playlists[k].name != ancplaylist %}
                         {% set ancplaylist = playlists[k].name %}
@@ -32,6 +33,7 @@
                             <td>
                                 <h5 class="text-info">
                                     {{ playlists[k].name }}
+                                    
                                 </h5>
                             </td>                 
                              <!--Catégorie de la playlist-->
@@ -47,6 +49,14 @@
                              <!--Nombre de formation de la playlist-->
                                 <td>
                                     {{ playlists[k].formations|length }}
+                                </td>
+                                
+                            <!--Boutons CRUD de la playlist-->
+                                <td class="text-right">  
+                                    <a href="{{ path('admin.playlist.edit', {id:playlists[k].id}) }}" class="btn btn-secondary">Editer</a>
+                                    
+                                    <a href="{{ path('admin.playlist.suppr', {id:playlists[k].id}) }}" 
+                                       class="btn btn-danger" onclick="return confirm('Etes-vous sur de vouloir supprimer ?')">Supprimer</a> 
                                 </td>
                         </tr>
                     {% endif %}

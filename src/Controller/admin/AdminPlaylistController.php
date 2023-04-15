@@ -7,10 +7,13 @@
 
 namespace App\Controller\admin;
 
+use App\Entity\Playlist;
+use App\Form\PlaylistType;
 use App\Repository\CategorieRepository;
 use App\Repository\FormationRepository;
 use App\Repository\PlaylistRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -78,6 +81,32 @@ class AdminPlaylistController extends AbstractController {
         {
             return $this->redirectToRoute('admin.playlists');
         }       
+    }
+    
+    /**
+     * @Route("/adminPlaylist/edit/{id}", name="admin.playlist.edit")
+     * @param Playlist $playlist
+     * @param Request $request
+     * @return Response
+     */    
+    public function edit(Playlist $playlist, Request $request) : Response{ 
+        
+        $formPlaylist = $this->createForm(PlaylistType::class, $playlist);
+        $formPlaylist->handleRequest($request);    
+        
+        if($formPlaylist->isSubmitted() && $formPlaylist->isValid())
+        {
+            $this->playlistRepository->add($playlist, true);
+            return $this->redirectToRoute('admin.playlists');
+        }
+        $playlists = $this->playlistRepository->findByOrderByName('ASC');
+        return $this->render("admin/admin.playlist.edit.html.twig", [
+            'playlist' => $playlist,
+            'playlists' => $playlists,
+            'formPlaylist' => $formPlaylist->createView()
+        ]);
+        
+       
     }
 }
 

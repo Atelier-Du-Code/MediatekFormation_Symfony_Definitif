@@ -1,0 +1,33 @@
+{% extends "baseadmin.html.twig"%}
+{% block body %}
+    <th class="text-center align-top" scope="col">
+                    &nbsp;
+    </th>
+    <h2>Détail de la playlist :</h2>
+    <th class="text-center align-top" scope="col">
+                    &nbsp;                   
+    </th>
+    {{ include ('_admin.playlist.form.html.twig') }}
+    
+    <th class="text-center align-top" scope="col">
+                    &nbsp;
+    </th>
+    
+    <table class="table table-striped">
+        <th class="text-left align-top" scope="col">
+                    Formations de la playlist<br />                            
+                
+        </th>
+        <tbody>
+            {% for formation in playlist.formations %}
+                <tr class="align-middle">
+                    <td>
+                        <h5 class="text-info">
+                            {{formation.title }}
+                        </h5>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
