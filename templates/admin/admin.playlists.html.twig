@@ -3,14 +3,54 @@
 {% block body %}
     <h1>Page d'administration des playlists</h1>    
     
+    <p class="text-end">
+        <a href="{{ path('admin.playlist.ajout') }}" class="btn btn-primary"> 
+            Ajouter une playlist
+        </a>
+    </p>
+    
    <table class="table table-striped">        
         <thead>
             <tr>
                 <th class="text-left align-top" scope="col">
                     Playlist <br />
+                    
+                    <a href="{{ path('admin.playlist.sort', {champ:'title', ordre:'ASC'}) }}" 
+                       class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>
+                       
+                    <a href="{{ path('admin.playlist.sort', {champ:'title', ordre:'DESC'}) }}" 
+                       class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>
+                       
+                    
+                       <form class="form-inline mt-1" method="POST" 
+                          action="{{ path('admin.playlists.findByContainValueDansTablePlaylist', {champ:'name'}) }}">                        
+                        <div class="form-group mr-1 mb-2">
+                            <input type="text" class="sm" name="recherche" 
+                                   value="{% if valeurPlaylist|default and not table|default %}{{ valeurPlaylist }}{% endif %}">
+                            <input type="hidden" name="_token" value="{{ csrf_token('filtre_title') }}">
+                            <button type="submit" class="btn btn-info mb-2 btn-sm">filtrer</button>
+                        </div>
+                    </form>  
+                            
                 </th>
-                <th class="text-left align-top" scope="col">
-                    Catégories                    
+                
+               <th class="text-left align-top" scope="col">
+                    Catégories
+                    <form class="form-inline mt-1" method="POST" 
+                          action="{{ path('admin.playlists.findByContainValueDansTableCategories', {champ:'id'}) }}">
+                        
+                        <select class="form-select form-select-sm" name="recherche" id="recherche" onchange="this.form.submit()">
+                            <option value=""></option>
+                            {% for categorie in categories %}
+                                <option 
+                                    {% if valeurCategorie|default and valeurCategorie==categorie.id %} 
+                                        selected
+                                    {% endif %} 
+                                    value="{{ categorie.id }}">{{ categorie.name }}
+                                </option>
+                            {% endfor %}
+                        </select>                    
+                    </form>            
                 </th>
                 <th class="text-left align-right" scope="col">
                     Nombre de formations                   
@@ -32,14 +72,13 @@
                         <tr class="align-middle">
                             <td>
                                 <h5 class="text-info">
-                                    {{ playlists[k].name }}
-                                    
+                                    {{ playlists[k].name }}                                    
                                 </h5>
                             </td>                 
                              <!--Catégorie de la playlist-->
                                 <td class="text-left">
                                     {%  set categories = playlists[k].categoriesplaylist %}
-                                    {% if categories|length > 0 %}
+                                    {% if categories|length > 0%}
                                         {% for c in 0..categories|length-1 %}
                                             &nbsp; {{ categories[c] }}
                                         {% endfor %}
@@ -53,8 +92,8 @@
                                 
                             <!--Boutons CRUD de la playlist-->
                                 <td class="text-right">  
-                                    <a href="{{ path('admin.playlist.edit', {id:playlists[k].id}) }}" class="btn btn-secondary">Editer</a>
                                     
+                                    <a href="{{ path('admin.playlist.edit', {id:playlists[k].id}) }}" class="btn btn-secondary">Editer</a>                                    
                                     <a href="{{ path('admin.playlist.suppr', {id:playlists[k].id}) }}" 
                                        class="btn btn-danger" onclick="return confirm('Etes-vous sur de vouloir supprimer ?')">Supprimer</a> 
                                 </td>

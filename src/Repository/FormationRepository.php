@@ -79,7 +79,7 @@ class FormationRepository extends ServiceEntityRepository
      * @param type $table
      * @return Formation[]
      */
-    public function findByContainValueHorsChampFormation($champ, $valeur, $table): array{        
+    public function findByContainValueChampHorsTableFormation($champ, $valeur, $table): array{        
         
         if($valeur==""){
             return $this->findAll();

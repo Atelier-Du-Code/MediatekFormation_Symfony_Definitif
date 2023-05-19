@@ -65,6 +65,68 @@ class AdminPlaylistController extends AbstractController {
         ]);
     }
     
+     /**
+     * @Route("/adminPlaylist/tri/{champ}/{ordre}", name="admin.playlist.sort")
+     * @param type $champ
+     * @param type $ordre
+     * @return Response
+     */
+    public function sort($champ, $ordre):Response
+    {
+        switch($champ)
+        {                
+            case "title":
+                $playlists = $this->playlistRepository->findByOrderByName($ordre);
+                break;
+            case "nbformations":
+                $playlists = $this->playlistRepository->findByOrderByNbFormations($ordre);
+                break;    
+            default:
+        }
+        
+        $categories = $this->categorieRepository->findAll();
+        return $this->render(self :: CHEMIN_PLAYLIST, [
+            'playlists' => $playlists,
+            'categories' => $categories
+        ]);
+    }
+    
+     /**
+     * @Route("/adminPlaylist/recherchePlaylist/{champ}", name="admin.playlists.findByContainValueDansTablePlaylist")
+     * @param type $champ
+     * @param Request $request    
+     * @return Response
+     */
+    public function findByContainValueDansTablePlaylist($champ, Request $request): Response{
+        $valeur = $request->get("recherche");
+        $playlists = $this->playlistRepository->findByContainValueDansLaTablePlaylist($champ, $valeur);
+        
+        $categories = $this->categorieRepository->findAll();
+        return $this->render(self :: CHEMIN_PLAYLIST, [
+            'playlists' => $playlists,
+            'categories' => $categories,            
+            'valeurPlaylist' => $valeur,
+            
+        ]);
+    }  
+    
+    /**
+     * @Route("/adminPlaylist/rechercheCategorie/{champ}", name="admin.playlists.findByContainValueDansTableCategories")
+     * @param type $champ
+     * @param Request $request      
+     * @return Response
+     */
+    public function findByContainValueDansTableCategories($champ, Request $request): Response{
+        $valeur = $request->get("recherche");
+        $playlists = $this->playlistRepository->findByContainValueDansTableCategorie($champ, $valeur);
+        $categories = $this->categorieRepository->findAll();
+        return $this->render(self::CHEMIN_PLAYLIST, [
+            'playlists' => $playlists,
+            'categories' => $categories,            
+            'valeurCategorie' => $valeur
+        ]);
+    }  
+    
     /**
      * @Route("/adminPlaylist/suppr/{id}", name="admin.playlist.suppr")
      * @param Playlist playlist
@@ -105,8 +167,28 @@ class AdminPlaylistController extends AbstractController {
             'playlists' => $playlists,
             'formPlaylist' => $formPlaylist->createView()
         ]);
+    }
+    
+    /**
+     * @Route("/adminPlaylist/ajout", name="admin.playlist.ajout")
+     * @param Request $request
+     * @return Response
+     */    
+    public function ajout(Request $request) : Response{        
         
-       
+        $playlist = new Playlist();
+        $formPlaylist = $this->createForm(PlaylistType::class, $playlist);
+        $formPlaylist->handleRequest($request);
+        
+        if($formPlaylist->isSubmitted() && $formPlaylist->isValid())
+        {
+            $this->playlistRepository->add($playlist, true);
+            return $this->redirectToRoute('admin.playlists');
+        }
+        return $this->render("admin/admin.playlist.ajout.html.twig", [
+            'playlist' => $playlist,
+            'formPlaylist' => $formPlaylist->createView()
+        ]);
     }
 }
 

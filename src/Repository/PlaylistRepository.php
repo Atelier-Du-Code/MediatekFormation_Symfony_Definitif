@@ -106,17 +106,15 @@ class PlaylistRepository extends ServiceEntityRepository
         if($valeur==""){
             return $this->findByOrderByName('ASC');
         }           
-            return $this->createQueryBuilder('p')
-                    ->leftjoin(self::PLAYLIST_FORMATION, 'f')
-                    ->leftjoin(self::FORMATION_CATEGORIE, 'c')
+            return $this->createQueryBuilder('p')                      
+                    ->leftjoin(self :: PLAYLIST_FORMATION, 'f')
+                    ->leftjoin(self :: FORMATION_CATEGORIE, 'c')
                     ->where('c.'.$champ.' LIKE :valeur')
                     ->setParameter('valeur', '%'.$valeur.'%')
-                    ->groupBy(self::ID)
-                    ->addGroupBy( self::CATEGORIE_NAME)
-                    ->orderBy(self::PLAYLIST_NAME, 'ASC')
-                    ->addOrderBy( self::CATEGORIE_NAME)
+                    ->groupBy(self :: ID)                   
+                    ->orderBy(self :: PLAYLIST_NAME, 'ASC')
                     ->getQuery()
-                    ->getResult();   
+                    ->getResult();
     }    
         /**
      * Enregistrements dont un champ contient une valeur

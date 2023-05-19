@@ -112,7 +112,7 @@ class AdminFormationController extends AbstractController{
      */
     public function sortHorsTableFormation($champ, $ordre, $table): Response{
         
-        $formations = $this->formationRepository->findByContainValueHorsChampFormation($champ, $ordre, $table);
+        $formations = $this->formationRepository->findAllOrderByChampOrdreTable($champ, $ordre, $table);
         
         $categories = $this->categorieRepository->findAll();
         return $this->render(self ::CHEMIN_FORMATION, [
@@ -122,7 +122,7 @@ class AdminFormationController extends AbstractController{
     }     
     
     /**
-     * @Route("/formations/recherche/{champ}", name="admin.formations.findByContainValueChampFormation")
+     * @Route("/formationsAdmin/recherche/{champ}", name="admin.formations.findByContainValueChampFormation")
      * @param type $champ
      * @param Request $request
      
@@ -140,7 +140,7 @@ class AdminFormationController extends AbstractController{
     } 
     
      /**
-     * @Route("/formations/recherche/{champ}/{table}", name="admin.formations.findallcontainValueChampHorsTableFormation")
+     * @Route("/formationsAdmin/recherche/{champ}/{table}", name="admin.formations.findallcontainValueChampHorsTableFormation")
      * @param type $champ
      * @param Request $request
      * @param type $table

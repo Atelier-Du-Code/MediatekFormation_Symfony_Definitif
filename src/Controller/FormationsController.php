@@ -88,7 +88,7 @@ class FormationsController extends AbstractController {
      */
     public function findAllContainChampHorsTableFormation($champ, Request $request, $table): Response{
         $valeur = $request->get("recherche");
-        $formations = $this->formationRepository->findByContainValueHorsChampFormation($champ, $valeur, $table);
+        $formations = $this->formationRepository->findByContainValueChampHorsTableFormation($champ, $valeur, $table);
         $categories = $this->categorieRepository->findAll();
         return $this->render(self :: CHEMIN_FORMATION, [
             'formations' => $formations,
