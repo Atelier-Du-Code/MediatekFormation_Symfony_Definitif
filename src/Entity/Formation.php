@@ -52,9 +52,10 @@ class Formation
 
     /**
      * @ORM\ManyToMany(targetEntity=Categorie::class, inversedBy="formations")
+     * @ORM\JoinTable(name="formation_categorie")
      */
     private $categories;
-
+    
     public function __construct()
     {
         $this->categories = new ArrayCollection();

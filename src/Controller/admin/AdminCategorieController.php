@@ -7,10 +7,15 @@
 
 namespace App\Controller\admin;
 
+use App\Entity\Categorie;
+use App\Form\CategorieType;
 use App\Repository\CategorieRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
 
 /**
  * Description of AdminCategorieController
@@ -35,10 +40,48 @@ class AdminCategorieController extends AbstractController {
      * @Route("/adminCategorie/categories", name="admin.categories")
      * @return Response
      */
-    public function index(): Response{       
-        $categories = $this->categorieRepository->findByAllOrderBy('ASC');
-        return $this->render(self :: CHEMIN_CATEGORIES, [
-            'categories' => $categories            
+    public function index(Request $request): Response{       
+           
+         $categories = $this->categorieRepository->findAll();
+        
+        $categorie = new Categorie();
+        $categorieRef = new Categorie();
+       
+        
+        $formCategorie = $this->createForm(CategorieType::class, $categorie);
+        $formCategorie->handleRequest($request);
+        
+        
+        if($formCategorie->isSubmitted() && $formCategorie->isValid()&& 
+                $this->categorieRepository->findByDoublonsCategorie($categorie->getName()) == 0)
+        {    
+            $this->categorieRepository->add($categorie, true);
+             return $this->redirectToRoute('admin.categories');
+        }
+        return $this->render(self:: CHEMIN_CATEGORIES, [
+            'categories' => $categories,
+            'formCategorie' => $formCategorie->createView()
         ]);
     }
+    
+    /**
+    * @Route("/adminCategorie/suppr/{id}", name="admin.categorie.suppr")
+    * @param Categorie $categorie         
+    * @return Response
+    */
+    public function suppr(Categorie $categorie) : Response{        
+        
+        $nbFormationPourCategorie = $this->categorieRepository->findByAllFormationsOneCategorie($categorie->getId());
+        
+         if($nbFormationPourCategorie == 0)
+        {
+            $this->categorieRepository->remove($categorie, true);
+            return $this->redirectToRoute('admin.categories');
+        }
+        else
+        {
+            return $this->redirectToRoute('admin.categories');
+        }
+    }    
 }
+

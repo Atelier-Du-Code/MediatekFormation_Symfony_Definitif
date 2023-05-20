@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Categorie;
+use App\Entity\Formation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -55,6 +56,11 @@ class CategorieRepository extends ServiceEntityRepository
                 ->getResult();        
     }  
     
+    /**
+     * Retourne toutes les catégories triées par ordre alphabétique croissant ou décroissant 
+     * @param type $ordre
+     * @return type
+     */
     public function findByAllOrderBy($ordre)
     {
         return $this->createQueryBuilder('c')
@@ -62,5 +68,37 @@ class CategorieRepository extends ServiceEntityRepository
                 ->getQuery()
                 ->getResult();
     }
-
+    
+    /**
+     * Retourne le nombre de formations pour la catégorie passée en paramètre
+     * @param type $idCategorie
+     * @return int
+     */
+    public function findByAllFormationsOneCategorie($idCategorie): int
+{
+    return $this->createQueryBuilder('c')
+        ->select('COUNT(f)')
+        ->join('c.formations', 'f')
+        ->where('c.id = :id')
+        ->setParameter('id', $idCategorie)
+        ->getQuery()
+        ->getSingleScalarResult();
 }
+
+    
+    /**
+     * Renvoie le nombre de catégorie ayant un nom égal au paramètre valeur
+     * @param type $valeur
+     * @return int
+     */
+    public function findByDoublonsCategorie($valeur):int
+    {
+        return $this->createQueryBuilder('c')
+                ->select('count(c.name)')
+                ->where('c.name LIKE :valeur')
+                ->setParameter('valeur', '%'.$valeur.'%')                
+                ->getQuery()
+                ->getSingleScalarResult(); //Renvoie seulement le nombre d'enregistrements trouvé
+    }
+}
+

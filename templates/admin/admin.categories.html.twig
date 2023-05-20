@@ -2,11 +2,18 @@
 
 {% block body %}
     
-     <h1>Page d'administration des catégories<br /><br /></h1>
+    <h1>Page d'administration des catégories<br /><br /></h1>
+     
+    <th class="text-left align-top" scope="col">
+           {{ form_start(formCategorie) }}
+
+               {{ form_row(formCategorie.name) }}    
+    
+            {{ form_end(formCategorie) }}
+    </th>
      
     <table class="table table-striped">   
         <caption>Vous trouverez ici toutes les catégories de formation</caption>
-        
         <thead>
                 <tr>
                     <th class="text-left align-top" scope="col">
@@ -14,7 +21,8 @@
                        
                     </th>
                 </tr>
-        </thead>    
+        </thead>
+    
         <tbody>
             {% for categorie in categories %}
                 <tr class="align-middle">
@@ -23,6 +31,12 @@
                             {{ categorie.name }}
                         </h5>
                     </td>  
+                    <td>
+                        <a href="{{ path('admin.categorie.suppr', {id:categorie.id}) }}" 
+                           class="btn btn-danger" 
+                           onclick="return confirm('Etes-vous sur de vouloir supprimer ?')">Supprimer</a>
+                    </td>                   
+                    
                 </tr>
             {% endfor %}
         </tbody>
