@@ -90,14 +90,16 @@ class PlaylistsController extends AbstractController {
      * @return Response
      */
     public function findAllContainValueDansLaTableCategories($champ, Request $request): Response{
+        
         $valeur = $request->get("recherche");
-        $playlists = $this->playlistRepository->findByContainValueDansTableCategorie($champ, $valeur);
-        $categories = $this->categorieRepository->findAll();
-        return $this->render(self::CHEMIN_PLAYLISTS, [
-            'playlists' => $playlists,
-            'categories' => $categories,            
-            'valeur' => $valeur
-        ]);
+            $playlists = $this->playlistRepository->findByContainValueDansTableCategorie($champ, $valeur);
+            $categories = $this->categorieRepository->findAll();
+            return $this->render(self::CHEMIN_PLAYLISTS, [
+                'playlists' => $playlists,
+                'categories' => $categories,            
+                'valeur' => $valeur
+            ]);
+        
     }  
     
      /**
@@ -106,15 +108,23 @@ class PlaylistsController extends AbstractController {
      * @param Request $request
      * @return Response
      */
-    public function findAllContainValueDansLaTablePlaylist($champ, Request $request): Response{       
-        $valeur = $request->get("recherche");
+    public function findAllContainValueDansLaTablePlaylist($champ, Request $request): Response{      
+        
+        if($this->isCsrfTokenValid('filtre_'.$champ, $request->get('_token')))
+        {
+            $valeur = $request->get("recherche");
         $playlists = $this->playlistRepository->findByContainValueDansLaTablePlaylist($champ, $valeur);
         $categories = $this->categorieRepository->findAll();
         return $this->render(self::CHEMIN_PLAYLISTS, [
             'playlists' => $playlists,
             'categories' => $categories,            
-            'valeur' => $valeur
+            'valeurPlaylist' => $valeur
         ]);
+        }
+        else 
+        {
+             return $this->redirectToRoute("playlists");
+        }        
     }  
     
     /**

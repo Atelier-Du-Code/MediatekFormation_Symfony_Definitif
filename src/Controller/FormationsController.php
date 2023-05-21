@@ -80,14 +80,15 @@ class FormationsController extends AbstractController {
     
     
     /**
-     * @Route("/formations/recherche/{champ}/{table}", name="formations.findAllContainValueHorsChampTableFormation")
+     * @Route("/formations/rechercheCategorie/{champ}/{table}", name="formations.findAllContainChampCategorie")
      * @param type $champ
      * @param Request $request
      * @param type $table
      * @return Response
      */
-    public function findAllContainChampHorsTableFormation($champ, Request $request, $table): Response{
-        $valeur = $request->get("recherche");
+    public function findAllContainChampCategorie($champ, Request $request, $table): Response{
+       
+        $valeur = $request->get("rechercheCategorie");
         $formations = $this->formationRepository->findByContainValueChampHorsTableFormation($champ, $valeur, $table);
         $categories = $this->categorieRepository->findAll();
         return $this->render(self :: CHEMIN_FORMATION, [
@@ -95,7 +96,33 @@ class FormationsController extends AbstractController {
             'categories' => $categories,
             'valeur' => $valeur,
             'table' => $table
-        ]);
+        ]);                
+    }  
+    
+    /**
+     * @Route("/formations/recherche/{champ}/{table}", name="formations.findAllContainValuechampPlaylist")
+     * @param type $champ
+     * @param Request $request
+     * @param type $table
+     * @return Response
+     */
+    public function findAllContainChampPlaylist($champ, Request $request, $table): Response{
+        if($this->isCsrfTokenValid('filtre_'.$champ, $request->get('_token')))
+        {
+            $valeur = $request->get("recherche");
+            $formations = $this->formationRepository->findByContainValueChampHorsTableFormation($champ, $valeur, $table);
+            $categories = $this->categorieRepository->findAll();
+            return $this->render(self :: CHEMIN_FORMATION, [
+                'formations' => $formations,
+                'categories' => $categories,
+                'valeur' => $valeur,
+                'table' => $table
+            ]);
+        }
+        else
+        {
+            return $this->redirectToRoute("formations");
+        }
     }  
     
     /**
@@ -106,14 +133,21 @@ class FormationsController extends AbstractController {
      * @return Response
      */
     public function findAllContainValueChampTableFormation($champ, Request $request): Response{
-        $valeur = $request->get("recherche");
-        $formations = $this->formationRepository->findByContainValueChampFormation($champ, $valeur);
-        $categories = $this->categorieRepository->findAll();
-        return $this->render(self :: CHEMIN_FORMATION, [
-            'formations' => $formations,
-            'categories' => $categories,
-            'valeur' => $valeur           
-        ]);
+        if($this->isCsrfTokenValid('filtre_'.$champ, $request->get('_token')))
+        {
+            $valeur = $request->get("recherche");
+            $formations = $this->formationRepository->findByContainValueChampFormation($champ, $valeur);
+            $categories = $this->categorieRepository->findAll();
+            return $this->render(self :: CHEMIN_FORMATION, [
+                'formations' => $formations,
+                'categories' => $categories,
+                'valeur' => $valeur           
+                ]);
+        }
+        else
+        {
+            return $this->redirectToRoute("formations");
+        }
     }  
     /**
      * @Route("/formations/formation/{id}", name="formations.showone")

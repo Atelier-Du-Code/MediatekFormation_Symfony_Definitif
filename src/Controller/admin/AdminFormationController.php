@@ -129,14 +129,21 @@ class AdminFormationController extends AbstractController{
      * @return Response
      */
     public function findByContainValueChampFormation($champ, Request $request): Response{
-        $valeur = $request->get("recherche");        
-        $formations = $this->formationRepository->findByContainValueChampFormation($champ, $valeur);        
-        $categories = $this->categorieRepository->findAll();
-        return $this->render(self :: CHEMIN_FORMATION, [
-            'formations' => $formations,
-            'categories' => $categories,
-            'valeur' => $valeur            
-        ]);
+         if($this->isCsrfTokenValid('filtre_'.$champ, $request->get('_token')))
+         {
+             $valeur = $request->get("recherche");        
+            $formations = $this->formationRepository->findByContainValueChampFormation($champ, $valeur);        
+            $categories = $this->categorieRepository->findAll();
+            return $this->render(self :: CHEMIN_FORMATION, [
+                'formations' => $formations,
+                'categories' => $categories,
+                'valeur' => $valeur            
+            ]);
+         }
+         else
+         {
+              return $this->redirectToRoute("admin.formations");
+         }       
     } 
     
      /**
@@ -147,15 +154,24 @@ class AdminFormationController extends AbstractController{
      * @return Response
      */
     public function findAllContainValueChampHorsTableFormation($champ, Request $request, $table): Response{
-        $valeur = $request->get("recherche");
-        $formations = $this->formationRepository->findByContainValueChampHorsTableFormation($champ, $valeur, $table);        
-        $categories = $this->categorieRepository->findAll();
-        return $this->render(self :: CHEMIN_FORMATION, [
-            'formations' => $formations,
-            'categories' => $categories,
-            'valeur' => $valeur,
-            'table' => $table
-        ]);
+        
+         if($this->isCsrfTokenValid('filtre_'.$champ, $request->get('_token')))
+         {
+            $valeur = $request->get("recherche");
+            $formations = $this->formationRepository->findByContainValueChampHorsTableFormation($champ, $valeur, $table);        
+            $categories = $this->categorieRepository->findAll();
+            return $this->render(self :: CHEMIN_FORMATION, [
+                'formations' => $formations,
+                'categories' => $categories,
+                'valeur' => $valeur,
+                'table' => $table
+            ]);
+         }
+         else
+         {
+             return $this->redirectToRoute("admin.formations");
+         }
+        
     }  
     
      /**
