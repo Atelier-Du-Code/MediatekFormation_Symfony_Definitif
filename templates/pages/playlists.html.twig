@@ -10,7 +10,7 @@
                     <a href="{{ path('playlists.sort', {champ:'name', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>
                     <form class="form-inline mt-1" method="POST" action="{{ path('playlists.findAllContainValueTbPlaylist', {champ:'name'}) }}">
                         <div class="form-group mr-1 mb-2">
-                            <input type="text" class="sm" name="recherche" 
+                            <input type="text" class="sm" name="recherche_playlist" 
                                    value="{% if valeurPlaylist|default and not table|default %}{{ valeurPlaylist }}{% endif %}">
                             <input type="hidden" name="_token" value="{{ csrf_token('filtre_name') }}">
                             <button type="submit" class="btn btn-info mb-2 btn-sm">filtrer</button>

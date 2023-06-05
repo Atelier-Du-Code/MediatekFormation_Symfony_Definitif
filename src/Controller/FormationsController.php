@@ -35,6 +35,7 @@ class FormationsController extends AbstractController {
     }
     
     /**
+     * Méthode permettant d'accéder à la page listant toutes les formation côté front
      * @Route("/formations", name="formations")
      * @return Response
      */
@@ -48,6 +49,7 @@ class FormationsController extends AbstractController {
     }
     
     /**
+     * Méthode permettant le tri des formations suivant la valeur d'un champs de la table formation
      * @Route("/formations/tri/{champ}/{ordre}", name="formations.sortTableFormation")
      * @param type $champ
      * @param type $ordre    
@@ -63,6 +65,7 @@ class FormationsController extends AbstractController {
     }     
     
     /**
+     * Méthode permettant le tri des formations suivant la valeur d'un champs de la table playlist ou catégorie
      * @Route("/formations/tri/{champ}/{ordre}/{table}", name="formations.sortHorsTableFormation")
      * @param type $champ
      * @param type $ordre
@@ -80,6 +83,7 @@ class FormationsController extends AbstractController {
     
     
     /**
+     * Méthode permettant le filtrage des formations suivant la valeur d'un champs de la table categorie
      * @Route("/formations/rechercheCategorie/{champ}/{table}", name="formations.findAllContainChampCategorie")
      * @param type $champ
      * @param Request $request
@@ -100,6 +104,7 @@ class FormationsController extends AbstractController {
     }  
     
     /**
+     * Méthode permettant le filtrage des formations suivant la valeur d'un champs de la table Playlist
      * @Route("/formations/recherche/{champ}/{table}", name="formations.findAllContainValuechampPlaylist")
      * @param type $champ
      * @param Request $request
@@ -109,7 +114,7 @@ class FormationsController extends AbstractController {
     public function findAllContainChampPlaylist($champ, Request $request, $table): Response{
         if($this->isCsrfTokenValid('filtre_'.$champ, $request->get('_token')))
         {
-            $valeur = $request->get("recherche");
+            $valeur = $request->get("recherche_playlist");
             $formations = $this->formationRepository->findByContainValueChampHorsTableFormation($champ, $valeur, $table);
             $categories = $this->categorieRepository->findAll();
             return $this->render(self :: CHEMIN_FORMATION, [
@@ -126,6 +131,7 @@ class FormationsController extends AbstractController {
     }  
     
     /**
+     * Méthode permettant le filtrage des formations suivant la valeur du champs de la table formation
      * @Route("/formations/recherche/{champ}", name="formations.findAllContainValueChampTableFormation")
      * @param type $champ
      * @param Request $request
@@ -150,6 +156,7 @@ class FormationsController extends AbstractController {
         }
     }  
     /**
+     * Méthode permettant l'appel une page contenant les détails de la formation courante
      * @Route("/formations/formation/{id}", name="formations.showone")
      * @param type $id
      * @return Response

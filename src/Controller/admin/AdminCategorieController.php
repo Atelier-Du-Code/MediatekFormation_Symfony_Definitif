@@ -37,6 +37,8 @@ class AdminCategorieController extends AbstractController {
     }
     
      /**
+      * Méthode permettant l'accès à la page des catégories de la partie admin
+      * et d'y ajouter une catégorie si elle n'est pas déjà recensée dans la base
      * @Route("/adminCategorie/categories", name="admin.categories")
      * @return Response
      */
@@ -65,6 +67,7 @@ class AdminCategorieController extends AbstractController {
     }
     
     /**
+     * Methode permettant de supprimer une catégorie de la base
     * @Route("/adminCategorie/suppr/{id}", name="admin.categorie.suppr")
     * @param Categorie $categorie         
     * @return Response

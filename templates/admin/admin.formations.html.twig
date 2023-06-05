@@ -18,19 +18,17 @@
                 <th class="text-left align-top" scope="col">
                     formation<br />                       
                     <a href="{{ path('admin.formations.sortDansTableFormation', {champ:'title', ordre:'ASC'}) }}" 
-                       class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>
-                       
+                       class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>                       
                     <a href="{{ path('admin.formations.sortDansTableFormation', {champ:'title', ordre:'DESC'}) }}" 
                        class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a> 
                        
                      <form class="form-inline mt-1" method="POST" 
-                          action="{{ path('admin.formations.findByContainValueChampFormation', {champ:'title'}) }}">
-                        
-                        <div class="form-group mr-1 mb-2">
-                            <input type="text" class="sm" name="recherche" 
+                          action="{{ path('admin.formations.findByContainValueChampFormation', {champ:'title'}) }}">                        
+                        <div class="form-grou mr-1 mb-2">
+                            <input type="text" class="sm" name="recherche_formation" 
                                    value="{% if valeur|default and not table|default %}{{ valeur }}{% endif %}">
                             <input type="hidden" name="_token" value="{{ csrf_token('filtre_title') }}">
-                            <button type="submit" class="btn btn-info mb-2 btn-sm">filtrer</button>
+                            <button type="submit" class="btn btn-info mb-2 btn-sm">filtrerDesFormations</button>
                         </div>
                     </form>
                             
@@ -44,10 +42,10 @@
                        class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>
                        
                     <form class="form-inline mt-1" method="POST" 
-                          action="{{ path('admin.formations.findallcontainValueChampHorsTableFormation', {champ:'name', table:'playlist'}) }}">
+                          action="{{ path('admin.formations.findallcontainChampPlaylist', {champ:'name', table:'playlist'}) }}">
                         
                         <div class="form-group mr-1 mb-2">
-                            <input type="text" class="sm" name="recherche" 
+                            <input type="text" class="sm" name="recherche_playlist" 
                                    value="{% if valeur|default and table|default and table=='playlist' %}{{ valeur }}{% endif %}">
                             <input type="hidden" name="_token" value="{{ csrf_token('filtre_name') }}">
                             <button type="submit" class="btn btn-info mb-2 btn-sm">filtrer</button>
@@ -58,9 +56,10 @@
                 <th class="text-left align-top" scope="col">
                     catégories
                     
-                     <form class="form-inline mt-1" method="POST" 
-                          action="{{ path('admin.formations.findallcontainValueChampHorsTableFormation', {champ:'id', table:'categories'}) }}">
-                        <select class="form-select form-select-sm" name="recherche" id="recherche" onchange="this.form.submit()">
+                      <form class="form-inline mt-1" method="POST" 
+                          action="{{ path('admin.formations.findallcontainChampCategorie', {champ:'id', table:'categories'}) }}">
+                         
+                        <select class="form-select form-select-sm" name="recherche_categorie" id="recherche" onchange="this.form.submit()">
                             <option value=""></option>
                             {% for categorie in categories %}
                                 <option 
@@ -73,6 +72,8 @@
                         </select>                    
                     </form> 
                 </th>
+                
+                
                 <th class="text-center align-top" scope="col">
                     date<br />
                     
@@ -88,7 +89,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for formation in formations %}
+            {% for formation in formations %}                
                 <tr class="align-middle">
                     <td>
                         <h5 class="text-info">
@@ -108,7 +109,7 @@
                     </td>
                     <td class="text-center">                        
                        <td>
-                        <a href="{{ path('admin.formation.edit', {id:formation.id}) }}" class="btn btn-secondary">Editer</a> 
+                        <a href="{{ path('admin.formation.edit', {id:formation.id}) }}" class="btn btn-secondary" name="Editer">Editer</a> 
                         <a href="{{ path('admin.formation.suppr', {id:formation.id}) }}" class="btn btn-danger" onclick="return confirm('Etes-vous sur de vouloir supprimer ?')">Supprimer</a>
                     </td>                   
                 </tr>

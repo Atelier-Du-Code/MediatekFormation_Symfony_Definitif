@@ -36,6 +36,9 @@ class FormationValidationsTest extends KernelTestCase{
         $this->assertCount($nbErreursAttendues, $error, $message);
     }
     
+    /**
+     * Vérifie que la date de publication est antérieure ou égale à celle d'aujourd'hui
+     */
     public function testValidDeCreationDeDate()
     {
         $aujourdhui = new \DateTime();        
@@ -45,6 +48,9 @@ class FormationValidationsTest extends KernelTestCase{
         $this->assertErrors($this->getFormation()->setPublishedAt($JMoinsCinq), 0, "5 jours plus tôt, la date doit être valide");
     }
     
+    /**
+     * Vérifie que la date n'est pas postérieur à la date d'aujourd'hui
+     */
     public function testNonValidDeCreationDeDate()
     {
          $demain = (new \Datetime())->add(new \DateInterval("P1D"));

@@ -53,6 +53,8 @@ class AdminPlaylistController extends AbstractController {
     }
     
      /**
+      * Méthode permettant d'accéder à la page qui répertorie toutes les playlists
+     * dans la partie admin
      * @Route("/adminPlaylist/playlists", name="admin.playlists")
      * @return Response
      */
@@ -66,6 +68,7 @@ class AdminPlaylistController extends AbstractController {
     }
     
      /**
+      * Méthode permettant le tri croissant ou décroissant des playlists suivant la valeur d'un champs spécifique
      * @Route("/adminPlaylist/tri/{champ}/{ordre}", name="admin.playlist.sort")
      * @param type $champ
      * @param type $ordre
@@ -92,6 +95,7 @@ class AdminPlaylistController extends AbstractController {
     }
     
      /**
+      * Méthode permettant le filtrage des playlists suivant la valeur d'un champs de la table playlist
      * @Route("/adminPlaylist/recherchePlaylist/{champ}", name="admin.playlists.findByContainValueDansTablePlaylist")
      * @param type $champ
      * @param Request $request    
@@ -118,6 +122,7 @@ class AdminPlaylistController extends AbstractController {
     }  
     
     /**
+     * Méthode permettant le filtrage des catégories suivant la valeur d'un champs de la table catégorie
      * @Route("/adminPlaylist/rechercheCategorie/{champ}", name="admin.playlists.findByContainValueDansTableCategories")
      * @param type $champ
      * @param Request $request      
@@ -135,6 +140,8 @@ class AdminPlaylistController extends AbstractController {
     }  
     
     /**
+     * Méthode pour supprimer une playlist 
+     * Côté admin
      * @Route("/adminPlaylist/suppr/{id}", name="admin.playlist.suppr")
      * @param Playlist playlist
      * @return Response
@@ -153,6 +160,8 @@ class AdminPlaylistController extends AbstractController {
     }
     
     /**
+     * Méthode permettant d'éditer une playlist
+     * Côté admin
      * @Route("/adminPlaylist/edit/{id}", name="admin.playlist.edit")
      * @param Playlist $playlist
      * @param Request $request
@@ -177,6 +186,7 @@ class AdminPlaylistController extends AbstractController {
     }
     
     /**
+     * Méthode permettant l'ajout d'une playlist dans la base
      * @Route("/adminPlaylist/ajout", name="admin.playlist.ajout")
      * @param Request $request
      * @return Response

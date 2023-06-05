@@ -58,6 +58,7 @@ class PlaylistsController extends AbstractController {
     }
 
     /**
+     * Méthode permettant le tri des playlists suivant la valeur d'un champs de la table Playlist ou Categorie
      * @Route("/playlists/tri/{champ}/{ordre}", name="playlists.sort")
      * @param type $champ
      * @param type $ordre
@@ -84,6 +85,7 @@ class PlaylistsController extends AbstractController {
     }
     
     /**
+     * Méthode permettant le tri des playlists suivant la valeur d'un champs de la table Categorie
      * @Route("/playlists/recherche/{champ}", name="playlists.findAllContainValueTbCategorie")
      * @param type $champ
      * @param Request $request
@@ -103,7 +105,8 @@ class PlaylistsController extends AbstractController {
     }  
     
      /**
-     * @Route("/playlists/recherche/{champ}", name="playlists.findAllContainValueTbPlaylist")
+      * Méthode permettant le tri des playlists suivant la valeur d'un champs de la table Playlist
+     * @Route("/playlists/recherche_playlist/{champ}", name="playlists.findAllContainValueTbPlaylist")
      * @param type $champ
      * @param Request $request
      * @return Response
@@ -112,7 +115,7 @@ class PlaylistsController extends AbstractController {
         
         if($this->isCsrfTokenValid('filtre_'.$champ, $request->get('_token')))
         {
-            $valeur = $request->get("recherche");
+            $valeur = $request->get("recherche_playlist");
         $playlists = $this->playlistRepository->findByContainValueDansLaTablePlaylist($champ, $valeur);
         $categories = $this->categorieRepository->findAll();
         return $this->render(self::CHEMIN_PLAYLISTS, [
@@ -128,6 +131,7 @@ class PlaylistsController extends AbstractController {
     }  
     
     /**
+     * Méthode permettant l'appel une page contenant les détails de la playlist courante
      * @Route("/playlists/playlist/{id}", name="playlists.showone")
      * @param type $id
      * @return Response

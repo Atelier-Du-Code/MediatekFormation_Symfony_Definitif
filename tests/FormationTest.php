@@ -18,6 +18,9 @@ use PHPUnit\Framework\TestCase;
  */
 class FormationTest extends TestCase{
     
+    /*
+     * Vérifie qu'une date peut-être modifiée sans erreur
+     */
     public function testGetDateCreationString()
     {
         $formation = new Formation();

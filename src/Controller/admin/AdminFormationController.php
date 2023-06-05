@@ -41,7 +41,9 @@ class AdminFormationController extends AbstractController{
     }
     
     /**
-     * @Route("/admin", name="admin.formations")
+     * Méthode permettant d'accéder à la page qui répertorie toutes les formations 
+     * dans la partie admin
+     * @Route("/adminformations", name="admin.formations")
      * @return Response
      */
     public function index(): Response{
@@ -54,6 +56,8 @@ class AdminFormationController extends AbstractController{
     }
     
     /**
+     * Méthode permettant de supprimer une formation 
+     * Côté admin
      * @Route("/admin/suppr/{id}", name="admin.formation.suppr")
      * @param Formation $formation
      * @return Response
@@ -64,6 +68,8 @@ class AdminFormationController extends AbstractController{
     }
     
    /**
+    * Méthode permettant de modifier une formation
+    * Côté admin
      * @Route("/admin/edit/{id}", name="admin.formation.edit")
      * @param Formation $formation
      * @param Request $request
@@ -86,6 +92,9 @@ class AdminFormationController extends AbstractController{
     }
     
     /**
+     * Méthode permettant le tri de toutes les formations suivant la valeur d'un champ de la table formation 
+     * dans un ordre croissant ou décroissant 
+     * suivant un champs de la table formation
      * @Route("/formationsAdmin/tri/{champ}/{ordre}", name="admin.formations.sortDansTableFormation")
      * @param type $champ
      * @param type $ordre     
@@ -104,6 +113,9 @@ class AdminFormationController extends AbstractController{
     }
     
     /**
+     * Méthode permettant le tri de toutes les formations suivant la valeur champ de la table catégorie ou playlist
+     * dans un ordre croissant ou décroissant 
+     * suivant un champs de la table playlist ou categorie
      * @Route("/formationsAdmin/tri/{champ}/{ordre}/{table}", name="admin.formations.sortHorsTableFormation")
      * @param type $champ
      * @param type $ordre
@@ -122,6 +134,7 @@ class AdminFormationController extends AbstractController{
     }     
     
     /**
+     *  Méthode permettant le filtrage des formations suivant la valeur d'un champs de la table formation
      * @Route("/formationsAdmin/recherche/{champ}", name="admin.formations.findByContainValueChampFormation")
      * @param type $champ
      * @param Request $request
@@ -131,7 +144,7 @@ class AdminFormationController extends AbstractController{
     public function findByContainValueChampFormation($champ, Request $request): Response{
          if($this->isCsrfTokenValid('filtre_'.$champ, $request->get('_token')))
          {
-             $valeur = $request->get("recherche");        
+             $valeur = $request->get("recherche_formation");        
             $formations = $this->formationRepository->findByContainValueChampFormation($champ, $valeur);        
             $categories = $this->categorieRepository->findAll();
             return $this->render(self :: CHEMIN_FORMATION, [
@@ -147,17 +160,18 @@ class AdminFormationController extends AbstractController{
     } 
     
      /**
-     * @Route("/formationsAdmin/recherche/{champ}/{table}", name="admin.formations.findallcontainValueChampHorsTableFormation")
+     * Méthode permettant le filtrage des formations suivant la valeur d'un champs de la table playlist
+     * @Route("/formationsAdmin/recherche/{champ}/{table}", name="admin.formations.findallcontainChampPlaylist")
      * @param type $champ
      * @param Request $request
      * @param type $table
      * @return Response
      */
-    public function findAllContainValueChampHorsTableFormation($champ, Request $request, $table): Response{
+    public function findAllContainChampPlaylist($champ, Request $request, $table): Response{
         
          if($this->isCsrfTokenValid('filtre_'.$champ, $request->get('_token')))
          {
-            $valeur = $request->get("recherche");
+            $valeur = $request->get("recherche_playlist");
             $formations = $this->formationRepository->findByContainValueChampHorsTableFormation($champ, $valeur, $table);        
             $categories = $this->categorieRepository->findAll();
             return $this->render(self :: CHEMIN_FORMATION, [
@@ -175,6 +189,28 @@ class AdminFormationController extends AbstractController{
     }  
     
      /**
+     * Méthode permettant le filtrage des formations suivant la valeur d'un champs de la table categorie
+     * @Route("/formationsAdmin/recherche_categorie/{champ}/{table}", name="admin.formations.findallcontainChampCategorie")
+     * @param type $champ
+     * @param Request $request
+     * @param type $table
+     * @return Response
+     */
+    public function findAllContainChampCategorie($champ, Request $request, $table): Response{
+                
+            $valeur = $request->get("recherche_categorie");
+            $formations = $this->formationRepository->findByContainValueChampHorsTableFormation($champ, $valeur, $table);        
+            $categories = $this->categorieRepository->findAll();
+            return $this->render(self :: CHEMIN_FORMATION, [
+                'formations' => $formations,
+                'categories' => $categories,
+                'valeur' => $valeur,
+                'table' => $table
+            ]);
+    }  
+    
+     /**
+      * Méthode permettant l'ajout d'une formation à la base
      * @Route("/admin/ajout", name="admin.formation.ajout")
      * @param Request $request
      * @return Response
