@@ -16,6 +16,7 @@ security:
             security: false
         main:
             lazy: true
+            #http_basic: true
             provider: app_user_provider
             form_login:
                 # login est le nom de la route définie dans le controleur

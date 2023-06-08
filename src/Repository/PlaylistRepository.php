@@ -125,7 +125,7 @@ class PlaylistRepository extends ServiceEntityRepository
      */
     public function findByContainValueDansLaTablePlaylist($champ, $valeur): array{
         if($valeur==""){
-            return $this->findAllOrderBy('name', 'ASC');
+            return $this->findByOrderByName('ASC');
         }    
         
         return $this->createQueryBuilder('p')                    

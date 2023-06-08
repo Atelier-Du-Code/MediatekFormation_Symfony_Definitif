@@ -5,6 +5,10 @@
 {% block top %}
     <div class="container">
         <!-- titre -->
+        
+        <div class="container text-end">
+           <a href="{{ path('logout') }}">Se déconnecter</a> 
+        </div>
         <div class="text-left">
             <img src="{{ app.request.getBasePath()~'/banniere.jpg' }}" alt="C'est la bannière" >
         </div>
