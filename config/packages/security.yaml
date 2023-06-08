@@ -24,7 +24,7 @@ security:
                 check_path: login
                 enable_csrf: true
             logout:  
-                path: /
+                path: logout
                 target: /pageAcceuil
 
             # activate different ways to authenticate
