@@ -23,10 +23,9 @@ security:
                 login_path: login
                 check_path: login
                 enable_csrf: true
-            logout:    
-                path: /logout
-                target: / 
-                path: accueil
+            logout:  
+                path: /
+                target: /pageAcceuil
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
